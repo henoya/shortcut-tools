@@ -55,3 +55,34 @@ func TestRender(t *testing.T) {
 		t.Errorf("表示が違います\ngot:\n%s\nwant:\n%s", b.String(), want)
 	}
 }
+
+func TestRenderOtherwiseIf(t *testing.T) {
+	input := map[string]any{"Type": "Variable", "Variable": map[string]any{
+		"WFSerializationType": "WFTextTokenAttachment",
+		"Value":               map[string]any{"Type": "Variable", "VariableName": "c"},
+	}}
+	w := shortcut.Workflow{"WFWorkflowActions": []any{
+		act("conditional", map[string]any{"GroupingIdentifier": "G", "WFControlFlowMode": int64(0), "WFCondition": int64(4), "WFInput": input, "WFConditionalActionString": "a"}),
+		act("alert", map[string]any{"WFAlertActionMessage": "1"}),
+		act("conditional", map[string]any{"GroupingIdentifier": "G", "WFControlFlowMode": int64(1), "WFCondition": int64(4), "WFInput": input, "WFConditionalActionString": "b"}),
+		act("alert", map[string]any{"WFAlertActionMessage": "2"}),
+		act("conditional", map[string]any{"GroupingIdentifier": "G", "WFControlFlowMode": int64(1)}),
+		act("alert", map[string]any{"WFAlertActionMessage": "3"}),
+		act("conditional", map[string]any{"GroupingIdentifier": "G", "WFControlFlowMode": int64(2)}),
+	}}
+	var b strings.Builder
+	if err := Render(&b, w, Options{}); err != nil {
+		t.Fatal(err)
+	}
+	want := `   1 conditional Condition=4 ConditionalActionString="a" Input={$c}
+   2   alert AlertActionMessage="1"
+   3 otherwise if Condition=4 ConditionalActionString="b" Input={$c}:
+   4   alert AlertActionMessage="2"
+   5 otherwise:
+   6   alert AlertActionMessage="3"
+   7 end conditional
+`
+	if got := b.String(); !strings.HasSuffix(got, want) {
+		t.Errorf("表示が違います\ngot:\n%s\nwant (末尾):\n%s", got, want)
+	}
+}

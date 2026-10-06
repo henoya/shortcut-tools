@@ -89,8 +89,12 @@ func (r *renderer) action(n int, a map[string]any) {
 		return
 	case hasMode && mode == 1:
 		label := "otherwise"
-		if t, ok := p["WFMenuItemTitle"]; ok {
-			label = "case " + r.value(t)
+		switch {
+		case p["WFMenuItemTitle"] != nil:
+			label = "case " + r.value(p["WFMenuItemTitle"])
+		case short == "conditional" && hasCondition(p):
+			// iOS 27 の「Otherwise If」は、条件付きの途中アクションとして保存される。
+			label = "otherwise if" + r.params(p)
 		}
 		r.printf("%4d %s%s:\n", n, pad, label)
 		r.indent++
@@ -104,6 +108,16 @@ func (r *renderer) action(n int, a map[string]any) {
 	if hasMode && mode == 0 {
 		r.indent++
 	}
+}
+
+// hasCondition は条件分岐のパラメータに条件が含まれるかどうかを返す。
+func hasCondition(p map[string]any) bool {
+	for _, k := range []string{"WFCondition", "WFConditions", "WFInput"} {
+		if _, ok := p[k]; ok {
+			return true
+		}
+	}
+	return false
 }
 
 // 表示しないパラメータ（制御用・識別用）。
