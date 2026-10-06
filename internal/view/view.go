@@ -123,6 +123,7 @@ func hasCondition(p map[string]any) bool {
 // 表示しないパラメータ（制御用・識別用）。
 var hidden = map[string]bool{
 	"UUID": true, "GroupingIdentifier": true, "WFControlFlowMode": true, "CustomOutputName": true,
+	"AppIntentDescriptor": true,
 }
 
 func (r *renderer) params(p map[string]any) string {
