@@ -1,0 +1,14 @@
+// sct defs で生成したアプリ提供アクションの定義
+
+// Actions (com.sindresorhus.Actions) / AppIntent: GlobalVariableGetText
+// @descriptor {"AppIntentIdentifier":"GlobalVariableGetText","BundleIdentifier":"com.sindresorhus.Actions","Name":"Actions","TeamIdentifier":"YG56YK5RN5"}
+// @entity key
+action 'com.sindresorhus.Actions.GlobalVariableGetText' globalVariableGetText(text key: 'key'): variable
+
+// Actions (com.sindresorhus.Actions) / AppIntent: GlobalVariableSetText
+// @descriptor {"AppIntentIdentifier":"GlobalVariableSetText","BundleIdentifier":"com.sindresorhus.Actions","Name":"Actions","TeamIdentifier":"YG56YK5RN5"}
+action 'com.sindresorhus.Actions.GlobalVariableSetText' globalVariableSetText(text key: 'key', text value: 'value'): variable
+
+// Actions (com.sindresorhus.Actions) / AppIntent: SetUniformTypeIdentifier
+// @descriptor {"AppIntentIdentifier":"SetUniformTypeIdentifier","BundleIdentifier":"com.sindresorhus.Actions","Name":"Actions","TeamIdentifier":"YG56YK5RN5"}
+action 'com.sindresorhus.Actions.SetUniformTypeIdentifier' setUniformTypeIdentifier(variable file: 'file', text typeIdentifier: 'typeIdentifier'): variable

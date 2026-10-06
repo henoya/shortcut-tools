@@ -14,6 +14,7 @@ const usage = `使い方: sct <コマンド> [オプション]
   show      ワークフローを読みやすく表示する
   decompile Cherri のコードに変換する（cherri が必要）
   compile   Cherri のコードからショートカットを作る（cherri が必要）
+  defs      アプリ提供アクションの Cherri 定義を書き出す
 
 各コマンドの詳細は sct <コマンド> -h
 `
@@ -28,6 +29,7 @@ func main() {
 		"show":      runShow,
 		"decompile": runDecompile,
 		"compile":   runCompile,
+		"defs":      runDefs,
 	}
 	run, ok := cmds[os.Args[1]]
 	if !ok {
